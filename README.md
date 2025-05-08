@@ -27,15 +27,14 @@ Write the C Program using Linux Process API - fork(), wait(), exec()
 
 Test the C Program for the desired output. 
 
+## C Program to print process ID and parent Process ID using Linux API system calls
 # PROGRAM:
 
-## C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
-
+## CODE :
 ```
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>  
 
 int main() {
     int pid = fork();
@@ -49,14 +48,49 @@ int main() {
         wait(NULL); 
     }
 }
+
+```
+## OUTPUT :
+
+
+
+## C Program to create new process using Linux API system calls fork() and exit()
+## CODE :
+```
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+int main()
+{       int status;
+        printf("Running ps with execlp\n");
+        execl("ps", "ps", "ax", NULL);
+        wait(&status);
+        if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+        else
+                puts("child did not exit successfully\n");
+        printf("Done.\n");
+printf("Running ps with execlp. Now with path specified\n");
+        execl("/bin/ps", "ps", "ax", NULL);
+        wait(&status);
+        if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+        else
+                puts("child did not exit successfully\n");
+        printf("Done.\n");
+        exit(0);}
+
 ```
 
-##OUTPUT
-![image](https://github.com/user-attachments/assets/f7ec8a34-ea37-4c89-b327-9f0abeced10e)
+## OUTPUT
 
 
 
-## C Program to execute Linux system commands using Linux API system calls exec() , exit() , wait() family
+
+
+## C Program to execute Linux system commands using Linux API system calls exec() family
+## CODE
+
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -99,13 +133,10 @@ int main() {
     return 0;
 }
 
+
 ```
 
-
-##OUTPUT
-
-![image](https://github.com/user-attachments/assets/bdf78f5e-19a4-4825-aed0-6e3036d2f129)
-
+## OUTPUT
 
 # RESULT:
 The programs are executed successfully.
