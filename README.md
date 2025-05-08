@@ -51,6 +51,7 @@ int main() {
 
 ```
 ## OUTPUT :
+vi 2![image](https://github.com/user-attachments/assets/1b97dd34-9acb-4ffc-acd3-caccd2562963)
 
 
 
