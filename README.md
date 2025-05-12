@@ -33,27 +33,24 @@ Test the C Program for the desired output.
 ## CODE :
 ```
 #include <stdio.h>
-#include <stdlib.h>
+#include <sys/types.h>
 #include <unistd.h>
+int main(void)
+{	gcc 
+	pid_t process_id;
+	pid_t p_process_id;
+	process_id = getpid();
+	p_process_id = getppid();
 
-int main() {
-    int pid = fork();
 
-    if (pid == 0) { 
-        printf("I am child, my PID is %d\n", getpid()); 
-        printf("My parent PID is: %d\n", getppid()); 
-        sleep(2);  // Keep child alive for verification
-    } else { 
-        printf("I am parent, my PID is %d\n", getpid()); 
-        wait(NULL); 
-    }
-}
-
+	printf("The process id: %d\n",process_id);
+	printf("The process id of parent function: %d\n",p_process_id);
+	return 0;
+ }
 ```
 ## OUTPUT :
-vi 2![image](https://github.com/user-attachments/assets/1b97dd34-9acb-4ffc-acd3-caccd2562963)
-
-
+![image](https://github.com/user-attachments/assets/25e03231-53b9-4734-bccb-c2d2150ee183)
+clclea
 
 ## C Program to create new process using Linux API system calls fork() and exit()
 ## CODE :
@@ -98,41 +95,41 @@ int main() {
 ```
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <unistd.h>
 
 int main() {
     int status;
-    
-    printf("Running ps with execl\n");
-    if (fork() == 0) {
-        execl("ps", "ps", "-f", NULL);
+    pid_t pid;
+    printf("Running ps with execl (no path)\n");
+    pid = fork();
+    if (pid == 0) {
+        execl("ps", "ps", "ax", NULL);  
         perror("execl failed");
         exit(1);
-    }
-    wait(&status);
-    
-    if (WIFEXITED(status)) {
-        printf("Child exited with status: %d\n", WEXITSTATUS(status));
     } else {
-        printf("Child did not exit successfully\n");
+        wait(&status);
+        if (WIFEXITED(status))
+            printf("Child exited with status of %d\n", WEXITSTATUS(status));
+        else
+            puts("Child did not exit successfully");
     }
-    
-    printf("Running ps with execlp (without full path)\n");
-    if (fork() == 0) {
-        execlp("ps", "ps", "-f", NULL);
-        perror("execlp failed");
+
+    printf("Running ps with execl (with /bin/ps path)\n");
+    pid = fork();
+    if (pid == 0) {
+        execl("/bin/ps", "ps", "ax", NULL); 
+        perror("execl failed");
         exit(1);
-    }
-    wait(&status);
-    
-    if (WIFEXITED(status)) {
-        printf("Child exited for execlp with status: %d\n", WEXITSTATUS(status));
     } else {
-        printf("Child did not exit successfully\n");
+        wait(&status);
+        if (WIFEXITED(status))
+            printf("Child exited with status of %d\n", WEXITSTATUS(status));
+        else
+            puts("Child did not exit successfully");
     }
-    
+
     printf("Done.\n");
     return 0;
 }
@@ -141,6 +138,9 @@ int main() {
 ```
 
 ## OUTPUT
+![image](https://github.com/user-attachments/assets/295e5d8e-f965-4251-b6f5-bea5e23e652a)
+![image](https://github.com/user-attachments/assets/143e5ec7-142d-476a-a346-127eba00b13b)
+![image](https://github.com/user-attachments/assets/9903b163-3b31-49eb-9a64-2e31f53fbce4)
 
 # RESULT:
 The programs are executed successfully.
