@@ -58,32 +58,35 @@ vi 2![image](https://github.com/user-attachments/assets/1b97dd34-9acb-4ffc-acd3-
 ## C Program to create new process using Linux API system calls fork() and exit()
 ## CODE :
 ```
+#include <stdio.h>
 #include <stdlib.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-int main()
-{       int status;
-        printf("Running ps with execlp\n");
-        execl("ps", "ps", "ax", NULL);
-        wait(&status);
-        if (WIFEXITED(status))
-                printf("child exited with status of %d\n", WEXITSTATUS(status));
-        else
-                puts("child did not exit successfully\n");
-        printf("Done.\n");
-printf("Running ps with execlp. Now with path specified\n");
-        execl("/bin/ps", "ps", "ax", NULL);
-        wait(&status);
-        if (WIFEXITED(status))
-                printf("child exited with status of %d\n", WEXITSTATUS(status));
-        else
-                puts("child did not exit successfully\n");
-        printf("Done.\n");
-        exit(0);}
+#include <unistd.h>
+#include <sys/wait.h>  
+
+int main() {
+    pid_t pid = fork();
+
+    if (pid < 0) {
+        perror("Fork failed");
+        exit(1);
+    }
+
+    if (pid == 0) {
+        printf("I am child, my PID is %d\n", getpid());
+        printf("My parent PID is: %d\n", getppid());
+        sleep(2);  
+    } else {
+        printf("I am parent, my PID is %d\n", getpid());
+        wait(NULL);  
+    }
+
+    return 0;
+}
 
 ```
 
 ## OUTPUT
+![image](https://github.com/user-attachments/assets/90528423-acfa-4785-a77d-263cd26e6f3f)
 
 
 
